@@ -7,19 +7,20 @@ router.get('/', (req, res) => {
 		res.render('categories/index', {
 			title: 'List Categories',
 			categories: categories,
+			username: req.session.username,
 		})
 	})
 })
 
 router.get('/:id/journals', (req, res) => {
-	Model.Category.findById(req.params.id, { include: Model.Journal, order: [
-			
+	Model.Category.findById(req.params.id, { include: Model.Journal, order: [			
 			[Model.Journal, 'title']
 		] }).then((category) => {
 		console.log(category.Journals)
 		res.render('categories/journal', {
 			title: 'List Journal of Categories',
 			category: category,
+			username: req.session.username,
 		})
 	})
 })
@@ -27,6 +28,7 @@ router.get('/:id/journals', (req, res) => {
 router.get('/add', (req, res) => {
 	res.render('categories/add', {
 		title: 'Add New Category',
+		username: req.session.username,
 	})
 })
 
@@ -43,6 +45,7 @@ router.get('/:id/edit', (req, res) => {
 		res.render('categories/edit', {
 			title: 'Edit Category',
 			category: category,
+			username: req.session.username,
 		})
 	})
 })
