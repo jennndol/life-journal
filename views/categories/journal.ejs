@@ -1,0 +1,32 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <% include ../partials/nav %>
+        </header>
+        <main>
+            <div class="card">
+                <div class="card-header">Student</div>
+                <div class="card-body">
+                    <h2><%= category.name %></h2>
+                    <ul>
+                        <% category.Journals.forEach((journal)=>{ %>
+                            <li>
+                                <%= journal.title %>
+                            </li>
+                            <%})%>
+                    </ul>
+                    <a href="/categories">
+                        < Back </a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

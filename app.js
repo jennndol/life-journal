@@ -14,5 +14,6 @@ app.use(bodyParser.json());
 
 app.use('/users', UserRouter);
 app.use('/journals', JournalRouter);
+app.use('/categories', CategoryRouter);
 
 app.listen(3000, () => console.log('School app listening on port 3000!'));
