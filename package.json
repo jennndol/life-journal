@@ -1,0 +1,31 @@
+{
+  "name": "lifejournal",
+  "version": "1.0.0",
+  "description": "Journey sharing app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jennndol/lifeJournal.git"
+  },
+  "keywords": [
+    "jorney",
+    "express",
+    "sequelize",
+    "hacktiv8"
+  ],
+  "author": "Dhani L. Ramadhani, Luthfi",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jennndol/lifeJournal/issues"
+  },
+  "homepage": "https://github.com/jennndol/lifeJournal#readme",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "pg": "^7.4.0",
+    "sequelize": "^4.26.0"
+  }
+}
