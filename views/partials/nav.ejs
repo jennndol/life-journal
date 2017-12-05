@@ -5,13 +5,13 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="/users">User <span class="sr-only">(current)</span></a>
+      <li class="nav-item <%= section == 'users'?'active':''%>">
+        <a class="nav-link" href="/users">User</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/journeys">Journey</a>
+      <li class="nav-item <%= section == 'journals'?'active':''%>">
+        <a class="nav-link" href="/journals">Journal</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item <%= section == 'categories'?'active':''%>">
         <a class="nav-link" href="/categories">Category</a>
       </li>
     </ul>
@@ -21,7 +21,7 @@
         <%= username %>
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/journeys/:id">My Journey</a>
+        <a class="dropdown-item" href="/journals/:id">My Journey</a>
         <a class="dropdown-item" href="/follows/:id">My Follower</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="/users/logout">Logout</a>

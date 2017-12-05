@@ -15,11 +15,15 @@
                 <div class="card-body">
                     <h2><%= category.name %></h2>
                     <ul>
-                        <% category.Journals.forEach((journal)=>{ %>
+                        <% if(category.Journals.length > 0){ %>
+                            <% category.Journals.forEach((journal)=>{ %>
                             <li>
-                                <%= journal.title %>
+                                <a href="/journals/show/<%= journal.id %>"><%= journal.title %></a>
                             </li>
-                            <%})%>
+                        <%  }) %>
+                        <% } else { %>
+                           Journal with this category not found
+                        <% } %>
                     </ul>
                     <a href="/categories">
                         < Back </a>

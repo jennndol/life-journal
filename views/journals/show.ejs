@@ -11,17 +11,15 @@
                 <div class="card-header"><%= title %></div>
                 <div class="card-body">
                     <h2><%= title %></h2>
-                    <% journals.forEach(journal => { %>
-                    <h3><a href="/journals/show/<%= journal.id %>"><%= journal.title %></a><small> 
+                    <h3><%= journal.title %><small> 
                         <% if(username == journal.User.username){%>
                         <a href="/journals/edit/<%= journal.id %>/<%= journal.User.id %>"><i class="fa fa-pencil"></i></a>
                         <a href="/journals/delete/<%= journal.id %>"><i class="fa fa-trash"></i></a>
                         <% } %>
                     </small></h3>
-                    <p class="subtitle"><%= journal.happenedAt.toDateString() %> | 
+                    <p><%= journal.happenedAt.toDateString() %> | 
                     <%= journal.User.username %></p>
-                    <p><%= journal.content %></p>
-                    <% }) %>
+                    <p><%= journal.content %></p>                    
                 </div>
             </div>
         </main>

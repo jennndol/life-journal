@@ -1,27 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const Model = require('../models')
-const auth = require('../helpers/auth')
+const Model = require('../models');
+const auth = require('../helpers/auth');
+const islogin = require('../helpers/islogin')
 
 router.get('/', (req, res) => {
     Model.User.findAll().then((users) => {
         res.render('users/index', {
             title: 'Users List',
             users: users,
+            section: 'users',
         })
     }).catch((err) => {
         console.log(err);
     })
 });
 
-router.get('/signup', (req, res) => {
+router.get('/signup', islogin, (req, res) => {
     res.render('users/signup', {
         title: 'Sign Up',
-        username: req.session.username
+        username: req.session.username,
+        section: 'users',
     })
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', islogin, (req, res) => {
     Model.User.create({
             username: req.body.username,
             password: req.body.password
@@ -34,14 +37,15 @@ router.post('/signup', (req, res) => {
         });
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', islogin, (req, res) => {
     res.render('users/login', {
         title: 'Login',
         username: req.session.username,
+        section: 'users',
     });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', islogin, (req, res) => {
     Model.User.findOne({
         where: {
             username: req.body.username,
@@ -55,7 +59,7 @@ router.post('/login', (req, res) => {
     })
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', auth, (req, res) => {
     req.session.destroy(err => {
         if (!err) {
             res.redirect('/journals');

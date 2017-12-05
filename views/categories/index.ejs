@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <span class="btn-group">
                     <h2><%= title %></h2> 
-                    <a type="button" class="btn btn-primary" href="/categories/add">Add</a>
+                    <% if(username){%><a type="button" class="btn btn-primary" href="/categories/add">Add</a><%}%>
                 </span>
                     <table class="table">
                         <thead>
@@ -31,8 +31,10 @@
                                 <td>
                                     <%= category.name %>
                                 </td>
-                                <td><a href="/categories/<%= category.id %>/edit">Edit </a>
+                                <td><% if(username){%>
+                                    <a href="/categories/<%= category.id %>/edit">Edit </a>
                                     <a href="/categories/<%= category.id %>/delete" onclick="return confirm(`Are you okay if I delete this?`)">Delete </a>
+                                    <%}%>
                                     <a href="/categories/<%= category.id %>/journals">See All Post </a></td>
                             </tbody>
                             <% no++;})%>
