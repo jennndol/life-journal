@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Category.associate = (models) => {
-        Category.belongsTo(models.Journal);
+        Category.belongsToMany(models.Journal, {through: 'CategoryJournal'});
     }
 
     return Category;

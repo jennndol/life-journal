@@ -12,7 +12,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('CategoryJournal', [{
+    return queryInterface.bulkInsert('CategoryJournals', [{
         JournalId: 1,
         CategoryId: 1
       },
