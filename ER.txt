@@ -1,0 +1,25 @@
+User	
+id	INTEGER
+username	STRING
+password	STRING
+
+Journal	
+Id	INTEGER
+title	STRING
+content	TEXT
+UserId	INTEGER
+happenedAt	DATE
+
+Category	
+id	INTEGER
+Name	STRING
+
+CategoryJournal	
+id	INTEGER
+jounalId	INTEGER
+CategoryId	INTEGER
+
+FOLLOW	
+id	INTEGER
+UserId	INTEGER
+FollowerId	INTEGER
