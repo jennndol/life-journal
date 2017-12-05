@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
   });
   
   Journal.associate = (models) =>{
-    Journal.belongsTo(models.User, onDelete='SET NULL');
-    Journal.belongsToMany(models.Category, {through: 'CategoryJournal'}, onDelete='CASCADE');
+    Journal.belongsTo(models.User);
+    Journal.belongsToMany(models.Category, {through: 'CategoryJournal'});
   }
 
   return Journal;
