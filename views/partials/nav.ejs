@@ -1,16 +1,28 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+      <a class="navbar-brand" href="/">Life Journey</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+   <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="/users">User <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/journey">Journey</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/category">Category</a>
+      </li>
+    </ul>
+    <span class="navbar-nav my-2 my-lg-0">
+    <a class="nav-link dropdown-toggle btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">USERNAME</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/journeys/:id">My Journey</a>
+      <a class="dropdown-item" href="/follows/:id">My Follower</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="/logout">Logout</a>
     </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
+    </span>
   </div>
 </nav>
