@@ -13,5 +13,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use('/users', userRouter);
+app.use('/journals', journalRouter);
 
 app.listen(3000, () => console.log('Journal app listening on port 3000!'));
