@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const auth = require('../helpers/auth');
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     models.Journal.findAll({
             include: [models.User]
         })
@@ -11,6 +12,7 @@ router.get('/', (req, res) => {
                 console.log(result.User);
             });
             res.render('journals/index', {
+                username: req.session.username,
                 title: 'Journals',
                 journals: journals
             });
@@ -20,7 +22,8 @@ router.get('/', (req, res) => {
 
 router.get('/add', (req, res) => {
     res.render('journals/add', {
-        title: 'Add Journal'
+        title: 'Add Journal',
+        username: req.session.username,
     });
 });
 
@@ -37,12 +40,13 @@ router.post('/add', (req, res) => {
     })
 });
 
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id/:userid', auth, (req, res) => {
     models.Journal.findById(req.params.id)
         .then(journal => {
             res.render('journals/edit', {
                 title: `Edit: ${journal.title}`,
-                journal: journal
+                journal: journal,
+                username: req.session.username
             });
         })
         .catch(error => res.send(error))
@@ -64,16 +68,16 @@ router.post('/edit/:id', (req, res) => {
 
 router.get('/delete/:id', (req, res) => {
     models.Journal.destroy({
-        where: {
-            id: req.params.id
-        }
-    })
-    .then(()=>{
-    	res.redirect('/journals');
-    })
-    .catch(error => {
-    	res.send(error)
-    });
+            where: {
+                id: req.params.id
+            }
+        })
+        .then(() => {
+            res.redirect('/journals');
+        })
+        .catch(error => {
+            res.send(error)
+        });
 });
 
 module.exports = router;

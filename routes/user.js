@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Model = require('../models')
+const auth = require('../helpers/auth')
 
 router.get('/', (req, res) => {
     Model.User.findAll().then((users) => {
@@ -46,7 +47,8 @@ router.post('/login', (req, res)=>{
 		}
 	}).then((user)=>{
 		user.login(req.body.password, (result) => {
-			req.session.username = req.body.username;
+			req.session.UserId = user.id;
+			req.session.username = user.username;
 			res.send(req.session);
 		})
 	})
