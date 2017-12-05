@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/jennndol/lifeJournal#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "nodemon": "^1.12.4",

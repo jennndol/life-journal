@@ -28,7 +28,8 @@ router.post('/signup', (req, res)=>{
 		res.send('SUDAH TERDAFTAR');
 	})
 	.catch(error => {
-		res.send(error);
+		console.log(error)
+		res.send('error');
 	});
 });
 
