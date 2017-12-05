@@ -22,9 +22,15 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     User.beforeCreate((user, options) => {
-      return bcrypt.hash(user.password, 10).then(function(hash) {
+      return bcrypt.hash(user.password, 10).then( (hash) => {
           user.password = hash
       }).catch(error => res.send(error));
     });
+
+    User.prototype.login = function(password, callback) {
+      bcrypt.compare(password, this.password).then( (res) => {
+        callback(res);
+      });
+    };
     return User
 };

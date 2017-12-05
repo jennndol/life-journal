@@ -33,4 +33,23 @@ router.post('/signup', (req, res)=>{
 	});
 });
 
+router.get('/login', (req, res)=>{
+	res.render('users/login', {
+		title : 'Login'
+	});
+});
+
+router.post('/login', (req, res)=>{
+	Model.User.findOne({
+		where : {
+			username : req.body.username,
+		}
+	}).then((user)=>{
+		user.login(req.body.password, (result) => {
+			req.session.username = req.body.username;
+			res.send(req.session);
+		})
+	})
+});
+
 module.exports = router;
