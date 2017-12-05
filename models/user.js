@@ -6,9 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = (models) => {
-        User.hasMany(models.Journal);
-        User.belongsToMany(User, {as: 'UserId', through: 'Follow', foreignKey: 'FollowerId'});        
-        User.belongsToMany(User, {as: 'FollowerId', through: 'Follow', foreignKey: 'UserId'});
+        User.hasMany(models.Journal, onDelete='CASCADE');
+        User.belongsToMany(User, {as: 'UserId', through: 'Follow', foreignKey: 'FollowerId', onDelete='CASCADE'});        
+        User.belongsToMany(User, {as: 'FollowerId', through: 'Follow', foreignKey: 'UserId', onDelete='CASCADE'});
     }
     return User;
 };
