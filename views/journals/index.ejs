@@ -11,6 +11,14 @@
                 <div class="card-header">Student</div>
                 <div class="card-body">
                     <h2><%= title %></h2>
+                    <% journals.forEach(journal => { %>
+                    <h3><%= journal.title %><small> 
+                        <a href="/journals/edit/<%= journal.id %>"><i class="fa fa-pencil"></i></a>
+                        <a href="/journals/delete/<%= journal.id %>"><i class="fa fa-trash"></i></a>
+                    </small></h3>
+                    <p><%= journal.content %></p>
+                    <p><%= journal.happenedAt.toDateString() %></p>
+                    <% }) %>
                 </div>
             </div>
         </main>
