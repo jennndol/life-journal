@@ -5,19 +5,23 @@ module.exports = {
         return queryInterface.bulkInsert('CategoryJournals', [{
             JournalId: 1,
             CategoryId: 1,
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }, {
             JournalId: 2,
             CategoryId: 1,
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date(),
         }, {
             JournalId: 1,
             CategoryId: 2,
             createdAt: new Date(),
+            updatedAt: new Date(),
         }, {
             JournalId: 2,
             CategoryId: 2,
             createdAt: new Date(),
+            updatedAt: new Date(),
         }], {});
     },
 
