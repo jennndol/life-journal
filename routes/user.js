@@ -176,7 +176,8 @@ router.get('/follow/:username', auth, (req, res)=> {
 		console.log(`${req.section.username} follows ${user.username}`);
 		res.redirect(`/users/${user.username}`)
 	}).catch((error)=>{
-		res.send(error)
+        console.log(error)
+		res.redirect(`/categories`)
 	})
 });
 
