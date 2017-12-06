@@ -52,9 +52,13 @@ router.post('/login', islogin, (req, res) => {
         }
     }).then((user) => {
         user.login(req.body.password, (result) => {
-            req.session.UserId = user.id;
-            req.session.username = user.username;
-            res.redirect('/journals');
+            if (result) {
+                req.session.UserId = user.id;
+                req.session.username = user.username;
+                res.redirect(`/users/${req.session.username}`);  
+            } else {
+                res.redirect('/users/login')
+            }            
         })
     })
 });
@@ -66,5 +70,38 @@ router.get('/logout', auth, (req, res) => {
         }
     })
 });
+
+router.get('/settings', auth, (req, res) => {
+    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
+        res.render('users/setting', {
+            title: 'Change Setting',
+            username: req.session.username,
+            section: 'users',
+            user: user,
+        })
+    })
+})
+
+router.post('/settings', auth, (req, res)=>{
+    Model.User.find({ where: { id: req.session.UserId } }).then(user => {
+        if (req.body.newpassword == req.body.verifpassword) {
+            user.login(req.body.oldpassword, (result) => {
+                if (result) {
+                    Model.User.update({password: req.body.newpassword}, {where: {id: req.session.UserId}}).then(()=>{
+                        res.send('Sukses')
+                    }).catch(err =>{
+                        console.log(err)
+                    })
+                }
+                else {
+                    console.log('&&&&&&& Old Password ga sama &&&&')
+                }
+            })
+        }
+        else{
+            console.log('=== SALAH VERIF!!!!! =====')
+        }
+    })
+})
 
 module.exports = router;

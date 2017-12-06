@@ -49,9 +49,15 @@ module.exports = (sequelize, DataTypes) => {
     });    
 
     User.beforeCreate((user, options) => {
-      console.log('Masuk Hook');
       user.username = user.username.toLowerCase();
     });
+
+    User.beforeBulkUpdate(({attributes, where}) => {
+      console.log('Masuk ke hook\n Atrrtibutes:', attributes, '\nWhere: ', where)
+      return bcrypt.hash(attributes.password, 10).then( (hash) => {
+          attributes.password = hash
+      }).catch(error => res.send(error));
+    }); 
 
     User.prototype.login = function(password, callback) {
       bcrypt.compare(password, this.password).then( (res) => {

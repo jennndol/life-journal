@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
         })
         .then(journals => {
             journals.forEach(result => {
-                console.log(result.User);
             });
             res.render('journals/index', {
                 username: req.session.username,
