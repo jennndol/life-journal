@@ -15,9 +15,12 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id/journals', (req, res) => {
-	Model.Category.findById(req.params.id, { include: Model.Journal, order: [			
+	Model.Category.findById(req.params.id, {
+		include: Model.Journal,
+		order: [
 			[Model.Journal, 'title']
-		] }).then((category) => {
+		]
+	}).then((category) => {
 		console.log(category.Journals.length)
 		res.render('categories/journal', {
 			title: 'List Journal of Categories',
@@ -64,9 +67,9 @@ router.post('/:id/edit', auth, (req, res) => {
 })
 
 router.get('/:id/delete', auth, (req, res) => {
-	Model.Category.destroy({where: {id: req.params.id}}).then(() => {
+	Model.Category.destroy({ where: { id: req.params.id } }).then(() => {
 		res.redirect('/categories')
-	}).catch((err)=>{
+	}).catch((err) => {
 		console.log(err);
 	})
 })

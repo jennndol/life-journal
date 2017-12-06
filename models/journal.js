@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     happenedAt: DataTypes.DATE
   });
-  
-  Journal.associate = (models) =>{
+
+  Journal.associate = (models) => {
     Journal.belongsTo(models.User);
-    Journal.belongsToMany(models.Category, {through: 'CategoryJournal'});
+    Journal.belongsToMany(models.Category, { through: 'CategoryJournal' });
   }
 
   return Journal;

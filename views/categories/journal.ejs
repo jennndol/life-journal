@@ -17,13 +17,15 @@
                     <ul>
                         <% if(category.Journals.length > 0){ %>
                             <% category.Journals.forEach((journal)=>{ %>
-                            <li>
-                                <a href="/journals/show/<%= journal.id %>"><%= journal.title %></a>
-                            </li>
-                        <%  }) %>
-                        <% } else { %>
-                           Journal with this category not found
-                        <% } %>
+                                <li>
+                                    <a href="/journals/show/<%= journal.id %>">
+                                        <%= journal.title %>
+                                    </a>
+                                </li>
+                                <%  }) %>
+                                    <% } else { %>
+                                        Journal with this category not found
+                                        <% } %>
                     </ul>
                     <a href="/categories">
                         < Back </a>

@@ -31,11 +31,12 @@
                                 <td>
                                     <%= category.name %>
                                 </td>
-                                <td><% if(username){%>
-                                    <a href="/categories/<%= category.id %>/edit">Edit </a>
-                                    <a href="/categories/<%= category.id %>/delete" onclick="return confirm(`Are you okay if I delete this?`)">Delete </a>
-                                    <%}%>
-                                    <a href="/categories/<%= category.id %>/journals">See All Post </a></td>
+                                <td>
+                                    <% if(username){%>
+                                        <a href="/categories/<%= category.id %>/edit">Edit </a>
+                                        <a href="/categories/<%= category.id %>/delete" onclick="return confirm(`Are you okay if I delete this?`)">Delete </a>
+                                        <%}%>
+                                            <a href="/categories/<%= category.id %>/journals">See All Post </a></td>
                             </tbody>
                             <% no++;})%>
                     </table>

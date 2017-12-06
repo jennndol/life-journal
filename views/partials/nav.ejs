@@ -16,27 +16,26 @@
       </li>
     </ul>
     <% if(username) {%>
-    <div class="navbar-nav my-2 my-lg-0 dropdown show">
-      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= username %>
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/journals/:id">My Journey</a>
-        <a class="dropdown-item" href="/follows/:id">My Follower</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/logout">Logout</a>
+      <div class="navbar-nav my-2 my-lg-0 dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= username %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/journals/:id">My Journey</a>
+          <a class="dropdown-item" href="/follows/:id">My Follower</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
       </div>
-    </div>
-    <% } else {%>
-    <div class="navbar-nav my-2 my-lg-0 dropdown show">
-      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <% } else {%>
+        <div class="navbar-nav my-2 my-lg-0 dropdown show">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Username
       </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/login">Login</a>
-      </div>
-    </div>
-    <% } %>
-
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="/login">Login</a>
+          </div>
+        </div>
+        <% } %>
   </div>
 </nav>

@@ -1,33 +1,38 @@
 <html lang="en">
-    <head>
-        <% include ../partials/head %>
-    </head>
-    <body class="container">
-        <header>
-            <% include ../partials/nav %>
-        </header>
-        <main>
-            <div class="card">
-                <div class="card-header"><%= title %></div>
-                <div class="card-body">
-                    <h2><%= title %></h2>
-                    <form action="/journals/add" method="post">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" placeholder="eg: Cycling in The Morning" name="title">
-                        </div>
-                        <div class="form-group">
-                            <label for="content">Content</label>
-                            <textarea class="form-control" id="content" placeholder="eg: Tell your story here!" name="content"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="happenedAt">Happened At</label>
-                            <input type="text" class="form-control" id="happenedAt" name="happenedAt" placeholder="dd/mm/yyyy">
-                        </div>
-                        <input type="submit" class=" btn btn-block btn-info">
-                    </form>
-                </div>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+    <header>
+        <% include ../partials/nav %>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <%= title %>
             </div>
-        </main>
-    </body>
+            <div class="card-body">
+                <h2><%= title %></h2>
+                <form action="/journals/add" method="post">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="eg: Cycling in The Morning" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content</label>
+                        <textarea class="form-control" id="content" placeholder="eg: Tell your story here!" name="content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="happenedAt">Happened At</label>
+                        <input type="text" class="form-control" id="happenedAt" name="happenedAt" placeholder="dd/mm/yyyy">
+                    </div>
+                    <input type="submit" class=" btn btn-block btn-info">
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
 </html>

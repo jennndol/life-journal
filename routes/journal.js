@@ -13,11 +13,11 @@ router.get('/', auth, (req, res) => {
             }
         })
         .then(follows => {
-        	let UserIdJournalToShow = [];
-        	UserIdJournalToShow.push(req.session.UserId);
-        	follows.forEach(follow => {
-        		UserIdJournalToShow.push(follow.UserId);
-        	});
+            let UserIdJournalToShow = [];
+            UserIdJournalToShow.push(req.session.UserId);
+            follows.forEach(follow => {
+                UserIdJournalToShow.push(follow.UserId);
+            });
             models.Journal.findAll({
                     include: [models.User],
                     where: {
