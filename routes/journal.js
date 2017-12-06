@@ -9,6 +9,7 @@ router.get('/', auth, (req, res) => {
     models.Follow.findAll({
             where: {
                 FollowerId: req.session.UserId,
+                status: 'followed'
             }
         })
         .then(follows => {
