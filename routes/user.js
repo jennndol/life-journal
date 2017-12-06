@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Model = require('../models');
 const auth = require('../helpers/auth');
-const islogin = require('../helpers/islogin')
+const islogin = require('../helpers/islogin');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 router.get('/', (req, res) => {
     Model.User.findAll().then((users) => {
@@ -16,82 +18,41 @@ router.get('/', (req, res) => {
     })
 });
 
-
-router.get('/signup', islogin, (req, res) => {
-    res.render('users/signup', {
-        title: 'Sign Up',
-        username: req.session.username,
-        section: 'users',
-    })
-});
-
-router.post('/signup', islogin, (req, res) => {
-    Model.User.create({
-            username: req.body.username,
-            password: req.body.password
+router.get('/followers', auth, (req, res) => {
+    Model.Follow.findAll({
+            where: {
+                UserId: req.session.UserId
+            }
         })
-        .then(() => {
-            res.redirect('/journals');
+        .then(followers => {
+            let arr = [];
+            followers.forEach(follower => {
+                arr.push(follower.FollowerId);
+            });
+            console.log(arr);
+            Model.User.findAll({
+                    where: {
+                        id: {
+                            [Op.any]: [arr]
+                        }
+                    }
+                })
+                .then(followersDetail => {
+                    res.render('users/followers', {
+                        title: 'Followers',
+                        section: 'followers',
+                        username: req.session.username,
+                        followers: followersDetail,
+                        status: followers,
+                    });
+                })
+                .catch()
         })
         .catch(error => {
-            res.send('error');
+            res.send(error)
         });
 });
 
-router.get('/login', islogin, (req, res) => {
-    res.render('users/login', {
-        title: 'Login',
-        username: req.session.username,
-        section: 'users',
-    });
-});
-
-router.get('/logout', auth, (req, res) => {
-    req.session.destroy(err => {
-        if (!err) {
-            res.redirect('/users/login');
-        } else {
-            res.send(err);
-        }
-    })
-});
-
-router.post('/login', islogin, (req, res) => {
-    Model.User.findOne({
-        where: {
-            username: req.body.username,
-        }
-    })
-    .then((user) => {
-        user.login(req.body.password, (result) => {
-            if (result) {
-                req.session.UserId = user.id;
-                req.session.username = user.username;
-                res.redirect(`/users/${req.session.username}`);
-            } else {
-                res.redirect('/users/login')
-            }
-        })
-    })
-    .catch(error => {
-    	res.send(error);
-    });
-});
-
-router.get('/followers', auth, (req, res) => {
-	console.log('Masuk Route /followers');
-	Model.Follow.findAll({
-		where : {
-			UserId : req.session.UserId
-		}
-	})
-	.then(result => {
-		console.log(result);
-	})
-	.catch(error => {
-		res.send(error)
-	});
-});
 
 router.get('/:username', auth, (req, res) => {
     Model.User.findOne({include: [Model.Journal], where: {username: req.params.username,}}).then(user => {

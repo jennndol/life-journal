@@ -1,0 +1,26 @@
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+    <body class="container">
+        <header>
+            <% include ../partials/nav %>
+        </header>
+        <main>
+            <div class="card">
+                <div class="card-header"><%= title %></div>
+                <div class="card-body">
+                    <h2><%= title %></h2>
+                    <ul>
+                        <% followers.forEach((follower, index) => { %>
+                        <li>
+                            <%= follower.username %>
+                            Status : <a href=""><%= status[index].status %></a>        
+                        </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
