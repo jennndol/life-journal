@@ -50,8 +50,8 @@ router.get('/logout', auth, (req, res) => {
     req.session.destroy(err => {
         if (!err) {
             res.redirect('/users/login');
-        } else{
-        	res.send(err);
+        } else {
+            res.send(err);
         }
     })
 });
@@ -61,40 +61,75 @@ router.post('/login', islogin, (req, res) => {
         where: {
             username: req.body.username,
         }
-    }).then((user) => {
+    })
+    .then((user) => {
         user.login(req.body.password, (result) => {
             if (result) {
                 req.session.UserId = user.id;
                 req.session.username = user.username;
-                res.redirect(`/users/${req.session.username}`);  
+                res.redirect(`/users/${req.session.username}`);
             } else {
                 res.redirect('/users/login')
-            }            
+            }
         })
     })
+    .catch(error => {
+    	res.send(error);
+    });
+});
+
+router.get('/followers', auth, (req, res) => {
+	console.log('Masuk Route /followers');
+	Model.Follow.findAll({
+		where : {
+			UserId : req.session.UserId
+		}
+	})
+	.then(result => {
+		console.log(result);
+	})
+	.catch(error => {
+		res.send(error)
+	});
 });
 
 router.get('/:username', (req, res) => {
-    Model.User.findOne({include: [Model.Journal], where: {username: req.params.username,}}).then(user => {
-        Model.Follow.findAll({where: {UserId: user.id}, attributes:['FollowerId']}).then((listFollower)=>{
-            let follow = listFollower.map((key)=>{
-                return key.FollowerId
+    Model.User.findOne({
+            include: [Model.Journal],
+            where: {
+                username: req.params.username,
+            }
+        }).then(user => {
+            Model.Follow.findAll({
+                where: {
+                    UserId: user.id
+                },
+                attributes: ['FollowerId']
+            }).then((listFollower) => {
+                let follow = listFollower.map((key) => {
+                    return key.FollowerId
+                })
+                res.render('users/profile', {
+                    title: user.username,
+                    username: req.session.username,
+                    UserId: req.session.UserId,
+                    journals: user.Journals,
+                    section: 'journals',
+                    listfollower: follow,
+                })
             })
-            res.render('users/profile', {
-                title: user.username,
-                username: req.session.username,
-                UserId: req.session.UserId,
-                journals: user.Journals,
-                section: 'journals',
-                listfollower : follow,
-            })
-        })            
-    })
+        })
         .catch(error => res.send(error));
 });
 
 router.get('/settings', auth, (req, res) => {
-    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
+    Model.User.find({
+        where: {
+            id: req.session.UserId
+        }
+    }, {
+        attributes: ['username']
+    }).then(user => {
         res.render('users/setting', {
             title: 'Change Setting',
             username: req.session.username,
@@ -104,44 +139,52 @@ router.get('/settings', auth, (req, res) => {
     })
 })
 
-router.post('/settings', auth, (req, res)=>{
-    Model.User.find({ where: { id: req.session.UserId } }).then(user => {
+router.post('/settings', auth, (req, res) => {
+    Model.User.find({
+        where: {
+            id: req.session.UserId
+        }
+    }).then(user => {
         if (req.body.newpassword == req.body.verifpassword) {
             user.login(req.body.oldpassword, (result) => {
                 if (result) {
-                    Model.User.update({password: req.body.newpassword}, {where: {id: req.session.UserId}}).then(()=>{
+                    Model.User.update({
+                        password: req.body.newpassword
+                    }, {
+                        where: {
+                            id: req.session.UserId
+                        }
+                    }).then(() => {
                         res.send('Sukses')
-                    }).catch(err =>{
+                    }).catch(err => {
                         console.log(err)
                     })
-                }
-                else {
+                } else {
                     console.log('&&&&&&& Old Password ga sama &&&&')
                 }
             })
-        }
-        else{
+        } else {
             console.log('=== SALAH VERIF!!!!! =====')
         }
     })
 })
 
-router.get('/follow/:username', auth, (req, res)=> {
-	Model.User.findOne({
-		username: req.params.username,
-	})
-	.then(user => {
-		Model.Follow.create({
-			UserId : user.id,
-			FollowerId : req.session.UserId,
-			status : 'pending'
-		})
-	}).then(()=>{
-		console.log(`${req.section.username} follows ${user.username}`);
-		res.redirect(`/users/${user.username}`)
-	}).catch((error)=>{
-		res.send(error)
-	});
+router.get('/follow/:username', auth, (req, res) => {
+    Model.User.findOne({
+            username: req.params.username,
+        })
+        .then(user => {
+            Model.Follow.create({
+                UserId: user.id,
+                FollowerId: req.session.UserId,
+                status: 'pending'
+            })
+        }).then(() => {
+            console.log(`${req.section.username} follows ${user.username}`);
+            res.redirect(`/users/${user.username}`)
+        }).catch((error) => {
+            res.send(error)
+        });
 });
 
 module.exports = router;
