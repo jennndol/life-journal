@@ -93,7 +93,6 @@ router.get('/:username', (req, res) => {
         .catch(error => res.send(error));
 });
 
-
 router.get('/settings', auth, (req, res) => {
     Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
         res.render('users/setting', {
