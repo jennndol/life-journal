@@ -46,6 +46,16 @@ router.get('/login', islogin, (req, res) => {
     });
 });
 
+router.get('/logout', auth, (req, res) => {
+    req.session.destroy(err => {
+        if (!err) {
+            res.redirect('/users/login');
+        } else{
+        	res.send(err);
+        }
+    })
+});
+
 router.post('/login', islogin, (req, res) => {
     Model.User.findOne({
         where: {
@@ -81,19 +91,6 @@ router.get('/:username', (req, res) => {
         })            
     })
         .catch(error => res.send(error));
-});
-
-router.get('/logout', (req, res) => {
-    console.log('Masuk sini')
-    req.session.destroy(err => {
-        console.log(req.session, '@@@@@ Ini session');
-        if (!err) {
-            res.redirect('/journals');
-        }
-        else{
-            console.log(err)
-        }
-    })
 });
 
 router.get('/settings', auth, (req, res) => {
