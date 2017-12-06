@@ -65,21 +65,21 @@ router.post('/login', islogin, (req, res) => {
 });
 
 router.get('/:username', (req, res) => {
-    Model.User.findOne({
-            include: [Model.Journal],
-            where: {
-                username: req.params.username,
-            }
-        })
-        .then(user => {
+    Model.User.findOne({include: [Model.Journal], where: {username: req.params.username,}}).then(user => {
+        Model.Follow.findAll({where: {UserId: user.id}, attributes:['FollowerId']}).then((listFollower)=>{
+            let follow = listFollower.map((key)=>{
+                return key.FollowerId
+            })
             res.render('users/profile', {
                 title: user.username,
                 username: req.session.username,
-                UserId: req.session.userId,
+                UserId: req.session.UserId,
                 journals: user.Journals,
                 section: 'journals',
+                listfollower : follow,
             })
-        })
+        })            
+    })
         .catch(error => res.send(error));
 });
 
