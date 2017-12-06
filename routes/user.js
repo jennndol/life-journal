@@ -16,6 +16,26 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/:username', (req, res) => {
+    Model.User.findOne({
+            include: [Model.Journal],
+            where: {
+                username: req.params.username,
+            }
+        })
+        .then(user => {
+            res.render('users/profile', {
+                title: user.username,
+                username: req.session.username,
+                UserId: req.session.userId,
+                journals: user.Journals,
+                section: 'journals',
+            })
+        })
+        .catch(error => res.send(error));
+});
+
+
 router.get('/signup', islogin, (req, res) => {
     res.render('users/signup', {
         title: 'Sign Up',
