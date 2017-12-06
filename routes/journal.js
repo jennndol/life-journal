@@ -2,31 +2,51 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const auth = require('../helpers/auth');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 router.get('/', (req, res) => {
-    models.Journal.findAll({
-            include: [models.User]
+    models.Follow.findAll({
+            where: {
+                FollowerId: req.session.UserId,
+            }
         })
-        .then(journals => {
-            journals.forEach(result => {
-            });
-            res.render('journals/index', {
-                username: req.session.username,
-                title: 'Journals',
-                journals: journals,
-                section: 'journals',
-            });
+        .then(follows => {
+        	let UserIdJournalToShow = [];
+        	UserIdJournalToShow.push(req.session.UserId);
+        	follows.forEach(follow => {
+        		UserIdJournalToShow.push(follow.UserId);
+        	});
+            models.Journal.findAll({
+                    include: [models.User],
+                    where: {
+                        UserId: {
+                            [Op.any]: [UserIdJournalToShow]
+                        }
+                    }
+                })
+                .then(journals => {
+                    res.render('journals/index', {
+                        username: req.session.username,
+                        title: 'Journals',
+                        journals: journals,
+                        section: 'journals',
+                    });
+                })
+                .catch(err => res.send(err));
         })
-        .catch(err => res.send(err));
+        .catch(error => res.send(error));
 });
 
-router.get('/show/:id', (req, res)=>{
-    models.Journal.findById(req.params.id, {include: [models.User]}).then((journal)=>{
+router.get('/show/:id', (req, res) => {
+    models.Journal.findById(req.params.id, {
+        include: [models.User]
+    }).then((journal) => {
         res.render('journals/show', {
             title: journal.title,
             section: 'journals',
             username: req.session.username,
-            journal:journal,
+            journal: journal,
         })
     })
 })
