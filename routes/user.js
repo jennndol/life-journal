@@ -46,6 +46,16 @@ router.get('/login', islogin, (req, res) => {
     });
 });
 
+router.get('/logout', auth, (req, res) => {
+    req.session.destroy(err => {
+        if (!err) {
+            res.redirect('/users/login');
+        } else{
+        	res.send(err);
+        }
+    })
+});
+
 router.post('/login', islogin, (req, res) => {
     Model.User.findOne({
         where: {
@@ -83,13 +93,6 @@ router.get('/:username', (req, res) => {
         .catch(error => res.send(error));
 });
 
-router.get('/logout', auth, (req, res) => {
-    req.session.destroy(err => {
-        if (!err) {
-            res.redirect('/journals');
-        }
-    })
-});
 
 router.get('/settings', auth, (req, res) => {
     Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
