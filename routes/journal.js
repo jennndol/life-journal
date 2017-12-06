@@ -5,7 +5,7 @@ const auth = require('../helpers/auth');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     models.Follow.findAll({
             where: {
                 FollowerId: req.session.UserId,
