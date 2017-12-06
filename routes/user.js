@@ -83,10 +83,15 @@ router.get('/:username', (req, res) => {
         .catch(error => res.send(error));
 });
 
-router.get('/logout', auth, (req, res) => {
+router.get('/logout', (req, res) => {
+    console.log('Masuk sini')
     req.session.destroy(err => {
+        console.log(req.session, '@@@@@ Ini session');
         if (!err) {
             res.redirect('/journals');
+        }
+        else{
+            console.log(err)
         }
     })
 });
