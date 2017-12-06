@@ -74,10 +74,11 @@ router.post('/login', islogin, (req, res) => {
     })
 });
 
-router.get('/:username', (req, res) => {
+router.get('/:username', auth, (req, res) => {
     Model.User.findOne({include: [Model.Journal], where: {username: req.params.username,}}).then(user => {
         Model.Follow.findAll({where: {UserId: user.id}, attributes:['FollowerId']}).then((listFollower)=>{
-            let follow = listFollower.map((key)=>{
+        	Model.Follow.findOne({where:{UserId: user.id, FollowerId:req.session.UserId}},{attributes:[status]}).then((status)=>{
+        		let follow = listFollower.map((key)=>{
                 return key.FollowerId
             })
             res.render('users/profile', {
@@ -87,7 +88,9 @@ router.get('/:username', (req, res) => {
                 journals: user.Journals,
                 section: 'journals',
                 listfollower : follow,
+                status : status,
             })
+        	})
         })            
     })
         .catch(error => res.send(error));
@@ -127,9 +130,9 @@ router.post('/settings', auth, (req, res)=>{
 })
 
 router.get('/follow/:username', auth, (req, res)=> {
-	Model.User.findOne({
-		username: req.params.username,
-	})
+	Model.User.findOne({where:{
+			username: req.params.username,
+		}})
 	.then(user => {
 		Model.Follow.create({
 			UserId : user.id,
@@ -143,5 +146,22 @@ router.get('/follow/:username', auth, (req, res)=> {
 		res.send(error)
 	});
 });
+
+router.get('/block/:username', auth, (req, res) => {
+	Model.User.findOne({where:{username: req.params.username}}).then((user)=>{
+		Model.Follow.findOne({where:{UserId: req.session.UserId, FollowerId: user.id}}).then((follower)=>{
+			if (follower == null) {
+				Model.Follow.create({UserId: req.session.UserId, FollowerId: user.id, status: 'blocked'}).then(()=>{
+					console.log('Ke create\nUserId', req.session.UserId, '\nFollowerId:',user.id)
+					res.redirect(`/users/${req.session.username}`)
+				})
+			}
+			Model.Follow.update({status: 'blocked'}, {where:{UserId: req.session.UserId, FollowerId: user.id}}).then(()=>{
+				console.log('Ke update\nUserId', req.session.UserId, '\nFollowerId:',user.id)
+				res.redirect(`/users/${req.session.username}`)
+			})
+		})
+	})
+})
 
 module.exports = router;

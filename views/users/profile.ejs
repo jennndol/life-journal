@@ -17,9 +17,10 @@
                         <%} else {%>
                             <a href="#" class="btn btn-success">Followed</a>
                             <% } %>
+                            <a href="/users/block/<%= title %>" class="btn btn-danger">Block</a>
                     	<%} %>
                     </h2>
-                    <% let index = listfollower.indexOf( UserId ); if(username == title || index != -1){%>
+                    <% let index = listfollower.indexOf( UserId ); if(username == title || index != -1 || status != 'blocked'){%>
                     <% journals.forEach(journal => { %>
                     <h3><a href="/journals/show/<%= journal.id %>"><%= journal.title %></a><small> 
                         <% if(UserId == journal.UserId){%>
