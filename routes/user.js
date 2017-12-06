@@ -142,6 +142,27 @@ router.get('/follow/:username', auth, (req, res)=> {
 	})
 });
 
+router.get('/follow/:username/accept', auth, (req, res)=> {
+	Model.User.findOne({where:{
+			username: req.params.username,
+		}})
+	.then(user => {
+		Model.Follow.update({
+			status : 'accepted'
+		}, {
+			where : {
+				FollowerId : user.id,
+			}
+		})
+	}).then(()=>{
+		console.log(`${req.section.username} accepts ${user.username}`);
+		res.redirect(`/users/${user.username}`)
+	}).catch((error)=>{
+		res.send(error)
+	})
+});
+
+
 router.get('/block/:username', auth, (req, res) => {
 	Model.User.findOne({where:{username: req.params.username}}).then((user)=>{
 		Model.Follow.findOne({where:{UserId: req.session.UserId, FollowerId: user.id}}).then((follower)=>{
