@@ -2,7 +2,7 @@ let authentication = (req, res, next) => {
 	if(req.session.UserId){
 		next();
 	} else{
-		res.redirect('/users/login');
+		res.redirect('/login');
 	}
 }
 

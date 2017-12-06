@@ -50,8 +50,8 @@ router.get('/logout', auth, (req, res) => {
     req.session.destroy(err => {
         if (!err) {
             res.redirect('/users/login');
-        } else{
-        	res.send(err);
+        } else {
+            res.send(err);
         }
     })
 });
@@ -61,17 +61,36 @@ router.post('/login', islogin, (req, res) => {
         where: {
             username: req.body.username,
         }
-    }).then((user) => {
+    })
+    .then((user) => {
         user.login(req.body.password, (result) => {
             if (result) {
                 req.session.UserId = user.id;
                 req.session.username = user.username;
-                res.redirect(`/users/${req.session.username}`);  
+                res.redirect(`/users/${req.session.username}`);
             } else {
                 res.redirect('/users/login')
-            }            
+            }
         })
     })
+    .catch(error => {
+    	res.send(error);
+    });
+});
+
+router.get('/followers', auth, (req, res) => {
+	console.log('Masuk Route /followers');
+	Model.Follow.findAll({
+		where : {
+			UserId : req.session.UserId
+		}
+	})
+	.then(result => {
+		console.log(result);
+	})
+	.catch(error => {
+		res.send(error)
+	});
 });
 
 router.get('/:username', auth, (req, res) => {
@@ -92,12 +111,17 @@ router.get('/:username', auth, (req, res) => {
             })
         	})
         })            
-    })
-        .catch(error => res.send(error));
+    }).catch(error => res.send(error));
 });
 
 router.get('/settings', auth, (req, res) => {
-    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
+    Model.User.find({
+        where: {
+            id: req.session.UserId
+        }
+    }, {
+        attributes: ['username']
+    }).then(user => {
         res.render('users/setting', {
             title: 'Change Setting',
             username: req.session.username,
@@ -107,23 +131,31 @@ router.get('/settings', auth, (req, res) => {
     })
 })
 
-router.post('/settings', auth, (req, res)=>{
-    Model.User.find({ where: { id: req.session.UserId } }).then(user => {
+router.post('/settings', auth, (req, res) => {
+    Model.User.find({
+        where: {
+            id: req.session.UserId
+        }
+    }).then(user => {
         if (req.body.newpassword == req.body.verifpassword) {
             user.login(req.body.oldpassword, (result) => {
                 if (result) {
-                    Model.User.update({password: req.body.newpassword}, {where: {id: req.session.UserId}}).then(()=>{
+                    Model.User.update({
+                        password: req.body.newpassword
+                    }, {
+                        where: {
+                            id: req.session.UserId
+                        }
+                    }).then(() => {
                         res.send('Sukses')
-                    }).catch(err =>{
+                    }).catch(err => {
                         console.log(err)
                     })
-                }
-                else {
+                } else {
                     console.log('&&&&&&& Old Password ga sama &&&&')
                 }
             })
-        }
-        else{
+        } else {
             console.log('=== SALAH VERIF!!!!! =====')
         }
     })
@@ -144,7 +176,7 @@ router.get('/follow/:username', auth, (req, res)=> {
 		res.redirect(`/users/${user.username}`)
 	}).catch((error)=>{
 		res.send(error)
-	});
+	})
 });
 
 router.get('/block/:username', auth, (req, res) => {
