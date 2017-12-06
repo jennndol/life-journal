@@ -16,25 +16,6 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:username', (req, res) => {
-    Model.User.findOne({
-            include: [Model.Journal],
-            where: {
-                username: req.params.username,
-            }
-        })
-        .then(user => {
-            res.render('users/profile', {
-                title: user.username,
-                username: req.session.username,
-                UserId: req.session.userId,
-                journals: user.Journals,
-                section: 'journals',
-            })
-        })
-        .catch(error => res.send(error));
-});
-
 
 router.get('/signup', islogin, (req, res) => {
     res.render('users/signup', {
@@ -83,6 +64,25 @@ router.post('/login', islogin, (req, res) => {
     })
 });
 
+router.get('/:username', (req, res) => {
+    Model.User.findOne({
+            include: [Model.Journal],
+            where: {
+                username: req.params.username,
+            }
+        })
+        .then(user => {
+            res.render('users/profile', {
+                title: user.username,
+                username: req.session.username,
+                UserId: req.session.userId,
+                journals: user.Journals,
+                section: 'journals',
+            })
+        })
+        .catch(error => res.send(error));
+});
+
 router.get('/logout', auth, (req, res) => {
     req.session.destroy(err => {
         if (!err) {
@@ -123,5 +123,22 @@ router.post('/settings', auth, (req, res)=>{
         }
     })
 })
+
+router.get('/follow/:username', auth, (req, res)=> {
+	Model.User.findOne({
+		username: req.params.username,
+	})
+	.then(user => {
+		Model.Follow.create({
+			UserId : user.id,
+			FollowerId : req.session.UserId
+		})
+	}).then(()=>{
+		console.log(`${req.section.username} follows ${user.username}`);
+		redirect(`/users/${user.username}`)
+	}).catch((error)=>{
+		res.send(error)
+	});
+});
 
 module.exports = router;

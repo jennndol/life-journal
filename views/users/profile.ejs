@@ -10,7 +10,11 @@
             <div class="card">
                 <div class="card-header"><%= title %></div>
                 <div class="card-body">
-                    <h2><%= title %></h2>
+                    <h2><%= title %>
+                    	<% if (title !== username && username){ %>
+                    		<a href="/users/follow/<%= title %>" class="btn btn-success">Follow</a>
+                    	<%} %>
+                    </h2>
                     <% journals.forEach(journal => { %>
                     <h3><a href="/journals/show/<%= journal.id %>"><%= journal.title %></a><small> 
                         <% if(UserId == journal.UserId){%>
