@@ -57,10 +57,11 @@ router.get('/followers', auth, (req, res) => {
 router.get('/:username', auth, (req, res) => {
     Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
         Model.Follow.findAll({ where: { UserId: user.id }, attributes: ['FollowerId'] }).then((listFollower) => {
-            Model.Follow.findOne({ where: { UserId: user.id, FollowerId: req.session.UserId }, attributes: ['status'] }).then((status) => {
+            Model.Follow.findOne({ where: { UserId: req.session.UserId, FollowerId: user.id }, attributes: ['status'] }).then((status) => {
                 let follow = listFollower.map((key) => {
                     return key.FollowerId
                 })
+                if (status == null) status='';
                 console.log(status, 'tipenya', typeof status)
                 res.render('users/profile', {
                     title: user.username,
