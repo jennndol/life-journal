@@ -15,7 +15,7 @@
                     <h3><a href="/journals/show/<%= journal.id %>"><%= journal.title %></a><small> 
                         <% if(username == journal.User.username){%>
                         <a href="/journals/edit/<%= journal.id %>/<%= journal.User.id %>"><i class="fa fa-pencil"></i></a>
-                        <a href="/journals/delete/<%= journal.id %>"><i class="fa fa-trash"></i></a>
+                        <a href="/journals/delete/<%= journal.id %>" onclick="return confirm(`Are you okay if I delete this?`)"><i class="fa fa-trash"></i></a>
                         <% } %>
                     </small></h3>
                     <p class="subtitle"><%= journal.happenedAt.toDateString() %> | 
