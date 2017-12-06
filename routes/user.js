@@ -134,7 +134,8 @@ router.get('/follow/:username', auth, (req, res)=> {
 	.then(user => {
 		Model.Follow.create({
 			UserId : user.id,
-			FollowerId : req.session.UserId
+			FollowerId : req.session.UserId,
+			status : 'pending'
 		})
 	}).then(()=>{
 		console.log(`${req.section.username} follows ${user.username}`);
