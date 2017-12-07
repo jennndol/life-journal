@@ -46,7 +46,7 @@ router.get('/logout', auth, (req, res) => {
         if (!err) {
             res.redirect('/login');
         } else {
-            res.render('error/400'{
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -79,7 +79,7 @@ router.post('/login', islogin, (req, res) => {
             })
         })
         .catch(error => {
-            res.render('error/400'{
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',

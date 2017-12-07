@@ -35,7 +35,7 @@ router.get('/', auth, (req, res) => {
                     });
                 })
                 .catch(error => {
-                    res.render('error/400' {
+                    res.render('error/400', {
                         title: 'ERROR BAD REQUEST',
                         username: req.session.username,
                         section: '',
@@ -44,7 +44,7 @@ router.get('/', auth, (req, res) => {
                 });
         })
         .catch(error => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -64,7 +64,7 @@ router.get('/show/:id', (req, res) => {
             journal: journal,
         })
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
@@ -112,7 +112,7 @@ router.get('/edit/:id/:userid', auth, (req, res) => {
             });
         })
         .catch(error => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -143,7 +143,7 @@ router.post('/edit/:id', auth, (req, res) => {
                 });
             });
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
@@ -162,7 +162,7 @@ router.get('/delete/:id', auth, (req, res) => {
             res.redirect('/journals');
         })
         .catch(error => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',

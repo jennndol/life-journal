@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 			section: 'categories',
 		})
 	}).catch(error => {
-		res.render('error/400' {
+		res.render('error/400', {
 			title: 'ERROR BAD REQUEST',
 			username: req.session.username,
 			section: '',
@@ -37,7 +37,7 @@ router.get('/:id/journals', (req, res) => {
 			error: null,
 		})
 	}).catch(error => {
-		res.render('error/400' {
+		res.render('error/400', {
 			title: 'ERROR BAD REQUEST',
 			username: req.session.username,
 			section: '',
@@ -78,7 +78,7 @@ router.get('/:id/edit', auth, (req, res) => {
 			error: null,
 		})
 	}).catch(error => {
-		res.render('error/400' {
+		res.render('error/400', {
 			title: 'ERROR BAD REQUEST',
 			username: req.session.username,
 			section: '',
@@ -101,7 +101,7 @@ router.post('/:id/edit', auth, (req, res) => {
 			})
 		})
 	}).catch(error => {
-		res.render('error/400' {
+		res.render('error/400', {
 			title: 'ERROR BAD REQUEST',
 			username: req.session.username,
 			section: '',
@@ -114,7 +114,7 @@ router.get('/:id/delete', auth, (req, res) => {
 	Model.Category.destroy({ where: { id: req.params.id } }).then(() => {
 		res.redirect('/categories')
 	}).catch((error) => {
-		res.render('error/400' {
+		res.render('error/400', {
 			title: 'ERROR BAD REQUEST',
 			username: req.session.username,
 			section: '',

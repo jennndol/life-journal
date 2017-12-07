@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
             section: 'users',
         })
     }).catch((error) => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
@@ -52,7 +52,7 @@ router.get('/followers', auth, (req, res) => {
                     });
                 })
                 .catch(error => {
-                    res.render('error/400' {
+                    res.render('error/400', {
                         title: 'ERROR BAD REQUEST',
                         username: req.session.username,
                         section: '',
@@ -61,7 +61,7 @@ router.get('/followers', auth, (req, res) => {
                 })
         })
         .catch(error => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -92,7 +92,7 @@ router.get('/:username', auth, (req, res) => {
             })
         })
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
@@ -149,7 +149,7 @@ router.post('/settings', auth, (req, res) => {
             })
         }
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
@@ -173,7 +173,7 @@ router.get('/follow/:username', auth, (req, res) => {
         }).then(() => {
             res.redirect(`/users/${user.username}`)
         }).catch((error) => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -193,7 +193,7 @@ router.get('/follow/:username/accept', auth, (req, res) => {
         }).then(() => {
             res.redirect(`/users/${user.username}`)
         }).catch((error) => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -217,7 +217,7 @@ router.get('/block/:username', auth, (req, res) => {
                 res.redirect(`/users/${req.session.username}`)
             })
         }).catch(error => {
-            res.render('error/400' {
+            res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
                 username: req.session.username,
                 section: '',
@@ -225,7 +225,7 @@ router.get('/block/:username', auth, (req, res) => {
             });
         })
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',

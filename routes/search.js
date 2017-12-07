@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
             users: users
         })
     }).catch(error => {
-        res.render('error/400' {
+        res.render('error/400', {
             title: 'ERROR BAD REQUEST',
             username: req.session.username,
             section: '',
