@@ -34,9 +34,23 @@ router.get('/', auth, (req, res) => {
                         section: 'journals',
                     });
                 })
-                .catch(err => res.send(err));
+                .catch(error => {
+                    res.render('error/400' {
+                        title: 'ERROR BAD REQUEST',
+                        username: req.session.username,
+                        section: '',
+                        error: error
+                    });
+                });
         })
-        .catch(error => res.send(error));
+        .catch(error => {
+            res.render('error/400' {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
+        });
 });
 
 router.get('/show/:id', (req, res) => {
@@ -49,6 +63,13 @@ router.get('/show/:id', (req, res) => {
             username: req.session.username,
             journal: journal,
         })
+    }).catch(error => {
+        res.render('error/400' {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
     })
 })
 
@@ -57,6 +78,7 @@ router.get('/add', auth, (req, res) => {
         title: 'Add Journal',
         username: req.session.username,
         section: 'journals',
+        error: null,
     });
 });
 
@@ -64,12 +86,17 @@ router.post('/add', auth, (req, res) => {
     models.Journal.create({
         title: req.body.title,
         content: req.body.content,
-        userId: 2,
+        userId: req.session.UserId,
         happenedAt: req.body.happenedAt
     }).then(() => {
         res.redirect('/journals');
     }).catch(error => {
-        res.send(error)
+        res.render('journals/add', {
+            title: 'Add Journal',
+            username: req.session.username,
+            section: 'journals',
+            error: error,
+        });
     })
 });
 
@@ -81,23 +108,48 @@ router.get('/edit/:id/:userid', auth, (req, res) => {
                 journal: journal,
                 username: req.session.username,
                 section: 'journals',
+                error: null,
             });
         })
-        .catch(error => res.send(error))
+        .catch(error => {
+            res.render('error/400' {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
+        })
 });
 
 router.post('/edit/:id', auth, (req, res) => {
-    models.Journal.update({
-            title: req.body.title,
-            content: req.body.content,
-            happenedAt: req.body.happenedAt,
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(() => res.redirect('/journals'))
-        .catch(err => res.send(err));
+    models.Journal.findById(req.params.id).then(journal => {
+        models.Journal.update({
+                title: req.body.title,
+                content: req.body.content,
+                happenedAt: req.body.happenedAt,
+            }, {
+                where: {
+                    id: req.params.id
+                }
+            })
+            .then(() => res.redirect('/journals'))
+            .catch(err => {
+                res.render('journals/edit', {
+                    title: `Edit: ${journal.title}`,
+                    journal: journal,
+                    username: req.session.username,
+                    section: 'journals',
+                    error: err,
+                });
+            });
+    }).catch(error => {
+        res.render('error/400' {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
+    })
 });
 
 router.get('/delete/:id', auth, (req, res) => {
@@ -110,7 +162,12 @@ router.get('/delete/:id', auth, (req, res) => {
             res.redirect('/journals');
         })
         .catch(error => {
-            res.send(error)
+            res.render('error/400' {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         });
 });
 

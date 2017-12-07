@@ -17,7 +17,8 @@ router.post('/', (req, res) => {
     Model.User.findAll({
         where: {
             username: {
-                [Op.iLike]: `%${req.body.q}%` }
+                [Op.iLike]: `%${req.body.q}%`
+            }
         }
     }).then(users => {
         res.render('search/index', {
@@ -26,6 +27,13 @@ router.post('/', (req, res) => {
             section: 'search',
             users: users
         })
+    }).catch(error => {
+        res.render('error/400' {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
     })
 });
 

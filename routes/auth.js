@@ -24,11 +24,11 @@ router.post('/signup', islogin, (req, res) => {
         })
         .catch(error => {
             res.render('users/signup', {
-            title: 'Sign Up',
-            username: req.session.username,
-            section: 'users',
-            error : error,
-    })
+                title: 'Sign Up',
+                username: req.session.username,
+                section: 'users',
+                error : error,
+            })
         });
 });
 
@@ -37,6 +37,7 @@ router.get('/login', islogin, (req, res) => {
         title: 'Login',
         username: req.session.username,
         section: 'users',
+        error: null,
     });
 });
 
@@ -45,7 +46,12 @@ router.get('/logout', auth, (req, res) => {
         if (!err) {
             res.redirect('/login');
         } else {
-            res.send(err);
+            res.render('error/400'{
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: err
+            });
         }
     })
 });
@@ -63,12 +69,22 @@ router.post('/login', islogin, (req, res) => {
                     req.session.username = user.username;
                     res.redirect(`/users/${req.session.username}`);
                 } else {
-                    res.redirect('/login')
+                    res.render('users/login', {
+                        title: 'Login',
+                        username: req.session.username,
+                        section: 'users',
+                        error: 'Wrong Password',
+                    });
                 }
             })
         })
         .catch(error => {
-            res.send(error);
+            res.render('error/400'{
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         });
 });
 
