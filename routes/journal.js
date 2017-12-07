@@ -74,42 +74,77 @@ router.get('/show/:id', (req, res) => {
 })
 
 router.get('/add', auth, (req, res) => {
-    res.render('journals/add', {
-        title: 'Add Journal',
-        username: req.session.username,
-        section: 'journals',
-        error: null,
-    });
-});
-
-router.post('/add', auth, (req, res) => {
-    models.Journal.create({
-        title: req.body.title,
-        content: req.body.content,
-        UserId: req.session.UserId,
-        happenedAt: req.body.happenedAt
-    }).then(() => {
-        res.redirect('/journals');
-    }).catch(error => {
-        res.render('journals/add', {
-            title: 'Add Journal',
-            username: req.session.username,
-            section: 'journals',
-            error: error,
-        });
-    })
-});
-
-router.get('/edit/:id/:userid', auth, (req, res) => {
-    models.Journal.findById(req.params.id)
-        .then(journal => {
-            res.render('journals/edit', {
-                title: `Edit: ${journal.title}`,
-                journal: journal,
+    models.Category.findAll()
+        .then(categories => {
+            res.render('journals/add', {
+                title: 'Add Journal',
                 username: req.session.username,
                 section: 'journals',
                 error: null,
+                categories: categories
             });
+        })
+        .catch(error => {
+            res.render('error/400', {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
+        })
+});
+
+router.post('/add', auth, (req, res) => {
+    models.Category.findAll()
+        .then(categories => {
+            models.Journal.create({
+                title: req.body.title,
+                content: req.body.content,
+                UserId: req.session.UserId,
+                happenedAt: req.body.happenedAt
+            }).then((journal) => {
+                req.body.categories.forEach(category => {
+                    models.CategoryJournal.create({
+                        JournalId: journal.id,
+                        CategoryId: category
+                    });
+                });
+                res.redirect('/journals');
+            }).catch(error => {
+                res.render('journals/add', {
+                    title: 'Add Journal',
+                    username: req.session.username,
+                    section: 'journals',
+                    error: error,
+                    categories: categories
+                });
+            })
+        })
+
+});
+
+router.get('/edit/:id', auth, (req, res) => {
+    models.Journal.findById(req.params.id, {
+            include: [models.Category]
+        })
+        .then(journal => {
+            models.Category.findAll().then(categories => {
+                res.render('journals/edit', {
+                    title: `Edit: ${journal.title}`,
+                    journal: journal,
+                    username: req.session.username,
+                    section: 'journals',
+                    error: null,
+                    categories : categories
+                });
+            }).catch(error => {
+                res.render('error/400', {
+                    title: 'ERROR BAD REQUEST',
+                    username: req.session.username,
+                    section: '',
+                    error: error
+                });
+            } )
         })
         .catch(error => {
             res.render('error/400', {
@@ -132,7 +167,22 @@ router.post('/edit/:id', auth, (req, res) => {
                     id: req.params.id
                 }
             })
-            .then(() => res.redirect('/journals'))
+            .then(() => {
+                models.CategoryJournal.destroy({
+                    where: {
+                        JournalId : req.params.id
+                    }
+                })
+                if (typeof req.body.categories == 'string') {
+                    req.body.categories = [req.body.categories]
+                }
+                req.body.categories.forEach(category => {
+                    models.CategoryJournal.create({
+                        JournalId: req.params.id,
+                        CategoryId: category
+                    });                    
+                })
+                res.redirect('/journals')})
             .catch(err => {
                 res.render('journals/edit', {
                     title: `Edit: ${journal.title}`,
@@ -140,6 +190,7 @@ router.post('/edit/:id', auth, (req, res) => {
                     username: req.session.username,
                     section: 'journals',
                     error: err,
+                    categories: categories,
                 });
             });
     }).catch(error => {
