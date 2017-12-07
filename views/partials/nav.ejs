@@ -5,15 +5,6 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item <%= section == 'users'?'active':''%>">
-        <a class="nav-link" href="/users">User</a>
-      </li>
-      <li class="nav-item <%= section == 'journals'?'active':''%>">
-        <a class="nav-link" href="/journals">Journal</a>
-      </li>
-      <li class="nav-item <%= section == 'categories'?'active':''%>">
-        <a class="nav-link" href="/categories">Category</a>
-      </li>
     </ul>
     <% if(username) {%>
       <div class="navbar-nav my-2 my-lg-0 dropdown show">
@@ -21,21 +12,15 @@
           <%= username %>
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/journals/:id">My Journey</a>
-          <a class="dropdown-item" href="/follows/:id">My Follower</a>
+          <a class="dropdown-item" href="/users/<%= username %>">My Profile</a>
+          <a class="dropdown-item" href="/journals">My Feed</a>
+          <a class="dropdown-item" href="/users/followers">My Follower</a>
+          <a class="dropdown-item" href="/categories">Categories</a>
           <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/users/settings">Settings</a>          
           <a class="dropdown-item" href="/logout">Logout</a>
         </div>
       </div>
-      <% } else {%>
-        <div class="navbar-nav my-2 my-lg-0 dropdown show">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Username
-      </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="/login">Login</a>
-          </div>
-        </div>
-        <% } %>
+      <% } %>
   </div>
 </nav>
