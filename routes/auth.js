@@ -4,6 +4,13 @@ const Model = require('../models');
 const auth = require('../helpers/auth');
 const islogin = require('../helpers/islogin')
 
+router.get('/', (req,res)=>{
+    res.render('index', {
+        title: 'Journey of Your Life',
+        username: req.session.username,
+        section: '',
+    });
+})
 
 router.get('/signup', islogin, (req, res) => {
     res.render('users/signup', {
