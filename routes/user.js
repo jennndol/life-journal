@@ -69,7 +69,6 @@ router.get('/followers', auth, (req, res) => {
         });
 });
 
-
 router.get('/:username', auth, (req, res) => {
     Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
         Model.Follow.findAll({ where: { UserId: user.id }, attributes: ['FollowerId'] }).then((listFollower) => {
@@ -155,6 +154,36 @@ router.post('/settings', auth, (req, res) => {
         });
     })
 })
+
+router.get('/:username', auth, (req, res) => {
+    Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
+        Model.Follow.findAll({ where: { UserId: user.id }, attributes: ['FollowerId'] }).then((listFollower) => {
+            Model.Follow.findOne({ where: { UserId: req.session.UserId, FollowerId: user.id }, attributes: ['status'] }).then((status) => {
+                let follow = listFollower.map((key) => {
+                    return key.FollowerId
+                })
+                if (status == null) status = '';
+                console.log(status, 'tipenya', typeof status)
+                res.render('users/profile', {
+                    title: user.username,
+                    username: req.session.username,
+                    UserId: req.session.UserId,
+                    journals: user.Journals,
+                    section: 'journals',
+                    listfollower: follow,
+                    status: status,
+                })
+            })
+        })
+    }).catch(error => {
+        res.render('error/400', {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
+    });
+});
 
 router.get('/follow/:username', auth, (req, res) => {
     Model.User.findOne({
