@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       validate: {
+        notEmpty:{
+          args: true,
+          msg: 'Make sure username not empty'
+        },
         isUnique(value, next) {
           User.findOne({
               where: {
@@ -26,7 +30,15 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: DataTypes.STRING
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty:{
+          args: true,
+          msg: 'Make sure password not empty'
+        },
+      }
+    }
   });
 
   User.associate = (models) => {

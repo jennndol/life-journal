@@ -4,7 +4,19 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
     UserId: DataTypes.INTEGER,
-    happenedAt: DataTypes.DATE
+    happenedAt: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty:{
+          args: true,
+          msg: 'Make sure you insert date'
+        },
+        isDate:{
+          args: true,
+          msg: 'Make sure you strict to date format'
+        },
+      }
+    }
   });
 
   Journal.associate = (models) => {

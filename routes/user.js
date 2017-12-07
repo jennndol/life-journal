@@ -34,7 +34,6 @@ router.get('/followers', auth, (req, res) => {
             followers.forEach(follower => {
                 arr.push(follower.FollowerId);
             });
-            console.log(arr);
             Model.User.findAll({
                     where: {
                         id: {
@@ -79,7 +78,6 @@ router.get('/:username', auth, (req, res) => {
                     return key.FollowerId
                 })
                 if (status == null) status = '';
-                console.log(status, 'tipenya', typeof status)
                 res.render('users/profile', {
                     title: user.username,
                     username: req.session.username,
@@ -208,12 +206,10 @@ router.get('/block/:username', auth, (req, res) => {
         Model.Follow.findOne({ where: { UserId: req.session.UserId, FollowerId: user.id } }).then((follower) => {
             if (follower == null) {
                 Model.Follow.create({ UserId: req.session.UserId, FollowerId: user.id, status: 'blocked' }).then(() => {
-                    console.log('Ke create\nUserId', req.session.UserId, '\nFollowerId:', user.id)
                     res.redirect(`/users/${req.session.username}`)
                 })
             }
             Model.Follow.update({ status: 'blocked' }, { where: { UserId: req.session.UserId, FollowerId: user.id } }).then(() => {
-                console.log('Ke update\nUserId', req.session.UserId, '\nFollowerId:', user.id)
                 res.redirect(`/users/${req.session.username}`)
             })
         }).catch(error => {

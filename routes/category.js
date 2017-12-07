@@ -3,7 +3,7 @@ const router = express.Router();
 const Model = require('../models');
 const auth = require('../helpers/auth')
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
 	Model.Category.findAll({ order: ['name'] }).then((categories) => {
 		res.render('categories/index', {
 			title: 'List Categories',
@@ -21,14 +21,13 @@ router.get('/', (req, res) => {
 	})
 })
 
-router.get('/:id/journals', (req, res) => {
+router.get('/:id/journals', auth, (req, res) => {
 	Model.Category.findById(req.params.id, {
 		include: Model.Journal,
 		order: [
 			[Model.Journal, 'title']
 		]
 	}).then((category) => {
-		console.log(category.Journals.length)
 		res.render('categories/journal', {
 			title: 'List Journal of Categories',
 			category: category,
