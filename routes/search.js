@@ -7,7 +7,7 @@ const Op = Sequelize.Op
 router.get('/', (req, res) => {
     res.render('search/index', {
         title: 'Search',
-        username: req.params.username,
+        username: req.session.username,
         section: 'search',
         users: []
     });
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
     }).then(users => {
         res.render('search/index', {
             title: 'Search',
-            username: req.params.username,
+            username: req.sesson.username,
             section: 'search',
             users: users
         })

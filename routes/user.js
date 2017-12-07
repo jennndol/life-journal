@@ -107,7 +107,7 @@ router.get('/:username', auth, (req, res) => {
                     journals: user.Journals,
                     section: 'journals',
                     listfollower: follow,
-                    status: status,
+                    status: status, 
                 })
             })
         })
@@ -174,7 +174,6 @@ router.get('/:username', auth, (req, res) => {
                     return key.FollowerId
                 })
                 if (status == null) status = '';
-                console.log(status, 'tipenya', typeof status)
                 res.render('users/profile', {
                     title: user.username,
                     username: req.session.username,
@@ -207,16 +206,16 @@ router.get('/follow/:username', auth, (req, res) => {
                 UserId: user.id,
                 FollowerId: req.session.UserId,
                 status: 'pending'
+            }).then(() => {
+                res.redirect(`/users/${user.username}`)
+            }).catch((error) => {
+                res.render('error/400', {
+                    title: 'ERROR BAD REQUEST',
+                    username: req.session.username,
+                    section: '',
+                    error: error
+                });
             })
-        }).then(() => {
-            res.redirect(`/users/${user.username}`)
-        }).catch((error) => {
-            res.render('error/400', {
-                title: 'ERROR BAD REQUEST',
-                username: req.session.username,
-                section: '',
-                error: error
-            });
         })
 });
 
