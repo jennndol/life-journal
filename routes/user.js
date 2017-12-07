@@ -13,8 +13,13 @@ router.get('/', (req, res) => {
             users: users,
             section: 'users',
         })
-    }).catch((err) => {
-        console.log(err);
+    }).catch((error) => {
+        res.render('error/400', {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
     })
 });
 
@@ -46,10 +51,22 @@ router.get('/followers', auth, (req, res) => {
                         status: followers,
                     });
                 })
-                .catch()
+                .catch(error => {
+                    res.render('error/400', {
+                        title: 'ERROR BAD REQUEST',
+                        username: req.session.username,
+                        section: '',
+                        error: error
+                    });
+                })
         })
         .catch(error => {
-            res.send(error)
+            res.render('error/400', {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         });
 });
 
@@ -61,7 +78,7 @@ router.get('/:username', auth, (req, res) => {
                 let follow = listFollower.map((key) => {
                     return key.FollowerId
                 })
-                if (status == null) status='';
+                if (status == null) status = '';
                 console.log(status, 'tipenya', typeof status)
                 res.render('users/profile', {
                     title: user.username,
@@ -74,53 +91,70 @@ router.get('/:username', auth, (req, res) => {
                 })
             })
         })
-    }).catch(error => res.send(error));
+    }).catch(error => {
+        res.render('error/400', {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
+    });
 });
 
 router.get('/settings', auth, (req, res) => {
-    Model.User.find({
-        where: {
-            id: req.session.UserId
-        }
-    }, {
-        attributes: ['username']
-    }).then(user => {
+    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
         res.render('users/setting', {
             title: 'Change Setting',
             username: req.session.username,
             section: 'users',
             user: user,
+            error: null,
         })
     })
 })
 
 router.post('/settings', auth, (req, res) => {
-    Model.User.find({
-        where: {
-            id: req.session.UserId
-        }
-    }).then(user => {
+    Model.User.find({ where: { id: req.session.UserId } }).then(user => {
         if (req.body.newpassword == req.body.verifpassword) {
             user.login(req.body.oldpassword, (result) => {
                 if (result) {
-                    Model.User.update({
-                        password: req.body.newpassword
-                    }, {
-                        where: {
-                            id: req.session.UserId
-                        }
-                    }).then(() => {
+                    Model.User.update({ password: req.body.newpassword }, { where: { id: req.session.UserId } }).then(() => {
                         res.send('Sukses')
-                    }).catch(err => {
-                        console.log(err)
+                    }).catch(error => {
+                        res.render('users/setting', {
+                            title: 'Change Setting',
+                            username: req.session.username,
+                            section: 'users',
+                            user: user,
+                            error: error,
+                        })
                     })
                 } else {
-                    console.log('&&&&&&& Old Password ga sama &&&&')
+                    res.render('users/setting', {
+                        title: 'Change Setting',
+                        username: req.session.username,
+                        section: 'users',
+                        user: user,
+                        error: "Wrong old password",
+                    })
                 }
             })
         } else {
-            console.log('=== SALAH VERIF!!!!! =====')
+            res.render('users/setting', {
+                title: 'Change Setting',
+                username: req.session.username,
+                section: 'users',
+                user: user,
+                error: "Please make sure you verif new password",
+            })
         }
+    }).catch(error => {
+        res.render('error/400', {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
     })
 })
 
@@ -137,11 +171,14 @@ router.get('/follow/:username', auth, (req, res) => {
                 status: 'pending'
             })
         }).then(() => {
-            console.log(`${req.section.username} follows ${user.username}`);
             res.redirect(`/users/${user.username}`)
         }).catch((error) => {
-            console.log(error)
-            res.redirect(`/categories`)
+            res.render('error/400', {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         })
 });
 
@@ -152,18 +189,16 @@ router.get('/follow/:username/accept', auth, (req, res) => {
             }
         })
         .then(user => {
-            Model.Follow.update({
-                status: 'accepted'
-            }, {
-                where: {
-                    FollowerId: user.id,
-                }
-            })
+            Model.Follow.update({ status: 'accepted' }, { where: { FollowerId: user.id, } })
         }).then(() => {
-            console.log(`${req.section.username} accepts ${user.username}`);
             res.redirect(`/users/${user.username}`)
         }).catch((error) => {
-            res.send(error)
+            res.render('error/400', {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         })
 });
 
@@ -181,7 +216,21 @@ router.get('/block/:username', auth, (req, res) => {
                 console.log('Ke update\nUserId', req.session.UserId, '\nFollowerId:', user.id)
                 res.redirect(`/users/${req.session.username}`)
             })
+        }).catch(error => {
+            res.render('error/400', {
+                title: 'ERROR BAD REQUEST',
+                username: req.session.username,
+                section: '',
+                error: error
+            });
         })
+    }).catch(error => {
+        res.render('error/400', {
+            title: 'ERROR BAD REQUEST',
+            username: req.session.username,
+            section: '',
+            error: error
+        });
     })
 })
 
