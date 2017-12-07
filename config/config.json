@@ -5,5 +5,12 @@
     "database": "jnznlqcg",
     "host": "baasu.db.elephantsql.com",
     "dialect": "postgres"
+  },
+  "production": {
+    "username": "jnznlqcg",
+    "password": "PA2sNiaUP1R6z_Di3RFZEpMG7hxSpNFq",
+    "database": "jnznlqcg",
+    "host": "baasu.db.elephantsql.com",
+    "dialect": "postgres"
   }
 }
