@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+    <header>
+        <% include ../partials/nav %>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <%= title %>
+            </div>
+            <div class="card-body">
+                <h2><%= title %></h2>
+                <form action="" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="q" class="input-group">
+                    </div>
+                    <div class="form text-center">
+                        <input type="submit" class="btn btn-primary" value="search">
+                    </div>
+                </form>
+                <% if (users.length > 0) { %>
+                    <div>
+                        <% users.forEach(user => { %>
+                            <ul>
+                                <li>
+                                    <a href="/users/<%= user.username %>">
+                                        <%= user.username %>
+                                    </a>
+                                </li>
+                            </ul>
+                            <% }) %>
+                    </div>
+                    <% }%>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

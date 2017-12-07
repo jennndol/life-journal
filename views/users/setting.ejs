@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+    <header>
+        <% include ../partials/nav %>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <%= title %>
+            </div>
+            <div class="card-body">
+                <h2><%= title %></h2>
+                <%= error %>
+                <form action="/users/settings" method="post">
+                    <div class="form-group">
+                        <label for="Username">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="eg: johndoe" name="username" value="<%= user.username %>" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Old Password</label>
+                        <input type="password" class="form-control" id="password" name="oldpassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">New Password</label>
+                        <input type="password" class="form-control" id="password" name="newpassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Confirm New Password</label>
+                        <input type="password" class="form-control" id="password" name="verifpassword">
+                    </div>
+                    <input type="submit" class=" btn btn-block btn-info">
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

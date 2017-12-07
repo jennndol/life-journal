@@ -23,8 +23,11 @@
   },
   "homepage": "https://github.com/jennndol/lifeJournal#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "nodemon": "^1.12.4",
     "pg": "^7.4.0",
     "sequelize": "^4.26.0"
   }

@@ -1,0 +1,35 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+  <a class="navbar-brand" href="/">Life Journey</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    </ul>
+    <% if(username) {%>
+      <div class="navbar-nav my-2 my-lg-0 dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= username %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/users/<%= username %>">My Profile</a>
+          <a class="dropdown-item" href="/journals">My Feed</a>
+          <a class="dropdown-item" href="/users/followers">My Follower</a>
+          <a class="dropdown-item" href="/categories">Categories</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/users/settings">Settings</a>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </div>
+      <% } else {%>
+        <div class="navbar-nav my-2 my-lg-0 dropdown show">
+           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Howdy
+     </a> 
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="/login">Login</a>
+            <a class="dropdown-item" href="/signup">Signup</a></div>
+          </div>
+        <% } %>
+  </div>
+</nav>

@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <% include ../partials/nav %>
+        </header>
+        <main>
+            <div class="card">
+                <div class="card-header">Student</div>
+                <div class="card-body">
+                    <span class="btn-group">
+                    <h2><%= title %></h2> 
+                    <% if(username){%><a type="button" class="btn btn-primary" href="/categories/add">Add</a><%}%>
+                </span>
+                    <table class="table">
+                        <thead>
+                            <td scope="col">No.</td>
+                            <td scope="col">Category</td>
+                            <td scope="col">Action</td>
+                        </thead>
+                        <% let no=1;categories.forEach((category)=>{ %>
+                            <tbody>
+                                <td>
+                                    <%= no %>
+                                </td>
+                                <td>
+                                    <%= category.name %>
+                                </td>
+                                <td>
+                                    <% if(username){%>
+                                        <a href="/categories/<%= category.id %>/edit">Edit </a>
+                                        <a href="/categories/<%= category.id %>/delete" onclick="return confirm(`Are you okay if I delete this?`)">Delete </a>
+                                        <%}%>
+                                            <a href="/categories/<%= category.id %>/journals">See All Post </a></td>
+                            </tbody>
+                            <% no++;})%>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

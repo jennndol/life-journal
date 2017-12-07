@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+    <header>
+        <% include ../partials/nav %>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <%= title %>
+            </div>
+            <div class="card-body">
+                <h2><%= title %></h2>
+                <ul>
+                    <% followers.forEach((follower, index) => { %>
+                        <li>
+                            <%= follower.username %>
+                                Status :
+                                <% if (status[index].status == 'pending'){ %>
+                                    <a href="/users/follow/<%= follower.username %>/accept">Confirm</a>
+                                    <% } else { %>
+                                        <label>
+                                            <%= status[index].status %>
+                                        </label>
+                                        <% } %>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

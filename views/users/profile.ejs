@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+    <header>
+        <% include ../partials/nav %>
+    </header>
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <%= title %>
+            </div>
+            <div class="card-body">
+                <h2><%= title %>
+                        <% if (title !== username && username && status.status != 'blocked'){ %>
+                        <% if(listfollower.indexOf(UserId) == -1) { %>
+                            <a href="/users/follow/<%= title %>" class="btn btn-success">Follow</a>
+                        <%} else {%>
+                            <a href="#" class="btn btn-success">Followed</a>
+                            <% } %>
+                            <a href="/users/block/<%= title %>" class="btn btn-danger">Block</a>
+                        <%} %>
+                    </h2>
+                <% let index = listfollower.indexOf( UserId ); if(username == title || index != -1 && status.status != 'blocked'){%>
+                    <% journals.forEach(journal => { %>
+                        <h3><a href="/journals/show/<%= journal.id %>"><%= journal.title %></a><small> 
+                        <% if(UserId == journal.UserId){%>
+                        <a href="/journals/edit/<%= journal.id %>/<%= journal.UserId %>"><i class="fa fa-pencil"></i></a>
+                        <a href="/journals/delete/<%= journal.id %>" onclick='return confirm("Are you sure?")'><i class="fa fa-trash"></i></a>
+                        <% } %>
+                    </small></h3>
+                        <p class="subtitle">
+                            <%= journal.happenedAt.toDateString() %> |
+                                <%= title %>
+                        </p>
+                        <p>
+                            <%= journal.content %>
+                        </p>
+                        <% }) %>
+                            <%}%>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
