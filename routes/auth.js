@@ -10,6 +10,7 @@ router.get('/signup', islogin, (req, res) => {
         title: 'Sign Up',
         username: req.session.username,
         section: 'users',
+        error : null,
     })
 });
 
@@ -22,7 +23,12 @@ router.post('/signup', islogin, (req, res) => {
             res.redirect('/journals');
         })
         .catch(error => {
-            res.send('error');
+            res.render('users/signup', {
+            title: 'Sign Up',
+            username: req.session.username,
+            section: 'users',
+            error : error,
+    })
         });
 });
 
