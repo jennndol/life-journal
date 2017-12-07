@@ -86,7 +86,7 @@ router.post('/add', auth, (req, res) => {
     models.Journal.create({
         title: req.body.title,
         content: req.body.content,
-        userId: req.session.UserId,
+        UserId: req.session.UserId,
         happenedAt: req.body.happenedAt
     }).then(() => {
         res.redirect('/journals');

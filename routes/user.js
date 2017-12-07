@@ -34,7 +34,8 @@ router.get('/followers', auth, (req, res) => {
             followers.forEach(follower => {
                 arr.push(follower.FollowerId);
             });
-            Model.User.findAll({
+            if (arr.length > 0) {
+                Model.User.findAll({
                     where: {
                         id: {
                             [Op.any]: [arr]
@@ -58,6 +59,16 @@ router.get('/followers', auth, (req, res) => {
                         error: error
                     });
                 })
+            }
+            else{
+                res.render('users/followers', {
+                        title: 'Followers',
+                        section: 'followers',
+                        username: req.session.username,
+                        followers: [],
+                        status: followers,
+                    });
+            }          
         })
         .catch(error => {
             res.render('error/400', {
@@ -68,6 +79,18 @@ router.get('/followers', auth, (req, res) => {
             });
         });
 });
+
+router.get('/settings', auth, (req, res) => {
+    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
+        res.render('users/setting', {
+            title: 'Change Setting',
+            username: req.session.username,
+            section: 'users',
+            user: user,
+            error: null,
+        })
+    })
+})
 
 router.get('/:username', auth, (req, res) => {
     Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
@@ -97,18 +120,6 @@ router.get('/:username', auth, (req, res) => {
         });
     });
 });
-
-router.get('/settings', auth, (req, res) => {
-    Model.User.find({ where: { id: req.session.UserId } }, { attributes: ['username'] }).then(user => {
-        res.render('users/setting', {
-            title: 'Change Setting',
-            username: req.session.username,
-            section: 'users',
-            user: user,
-            error: null,
-        })
-    })
-})
 
 router.post('/settings', auth, (req, res) => {
     Model.User.find({ where: { id: req.session.UserId } }).then(user => {
