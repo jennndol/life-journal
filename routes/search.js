@@ -24,7 +24,7 @@ router.post('/', auth, (req, res) => {
     }).then(users => {
         res.render('search/index', {
             title: 'Search',
-            username: req.sesson.username,
+            username: req.session.username,
             section: 'search',
             users: users
         })
