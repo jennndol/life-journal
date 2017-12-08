@@ -189,9 +189,9 @@ router.get('/follow/:username/accept', auth, (req, res) => {
             }
         })
         .then(user => {
-            Model.Follow.update({ status: 'accepted' }, { where: { FollowerId: user.id, } })
-        }).then(() => {
-            res.redirect(`/users/${user.username}`)
+            Model.Follow.update({ status: 'accepted' }, { where: { FollowerId: user.id, } }).then(() => {
+                res.redirect(`/users/${user.username}`)
+            })
         }).catch((error) => {
             res.render('error/400', {
                 title: 'ERROR BAD REQUEST',
