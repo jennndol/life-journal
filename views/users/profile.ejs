@@ -20,6 +20,8 @@
                             <a href="/users/follow/<%= title %>" class="btn btn-success">Follow</a>
                         <%} else if(status.status == 'accepted'){%>
                             <a href="#" class="btn btn-success">Followed</a>
+                            <% } else if(status.status == 'pending'){%>
+                            <a href="#" class="btn btn-success">Pending</a>
                             <% } %>
                             <% } %>
                         <% if ( title !== username && status.status != 'blocked') { %>

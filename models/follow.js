@@ -7,14 +7,14 @@ module.exports = (sequelize, DataTypes) => {
         FollowerId: {
             type: DataTypes.INTEGER,
             validate: {
-                isUnique(value, next) {
+                /*isUnique(value, next) {
                     Model.Follow.findOne({ where: { FollowerId: values } }).then(follower => {
                         if (follower) {
                             next('You have follow or block this person');
                         }
                         next();
                     })
-                },
+                },*/
                 isRedundant(value, next) {
                     if (value == this.UserId) {
                         next("Same account can't be followed and blocked")

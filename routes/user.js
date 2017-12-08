@@ -167,17 +167,9 @@ router.get('/:username', auth, (req, res) => {
 });
 
 router.get('/follow/:username', auth, (req, res) => {
-    Model.User.findOne({
-            where: {
-                username: req.params.username,
-            }
-        })
-        .then(user => {
-            Model.Follow.create({
-                UserId: user.id,
-                FollowerId: req.session.UserId,
-                status: 'pending'
-            }).then(() => {
+    Model.User.findOne({where: {username: req.params.username,}}).then(user => {
+        console.log(user)
+            Model.Follow.create({UserId: user.id, FollowerId: req.session.UserId,status: 'pending'}).then(() => {
                 res.redirect(`/users/${user.username}`)
             }).catch((error) => {
                 res.render('error/400', {
