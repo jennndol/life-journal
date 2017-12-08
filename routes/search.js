@@ -3,8 +3,9 @@ const router = express.Router();
 const Model = require('../models');
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const auth = require('../helpers/auth');
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     res.render('search/index', {
         title: 'Search',
         username: req.session.username,
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
     Model.User.findAll({
         where: {
             username: {
@@ -23,7 +24,7 @@ router.post('/', (req, res) => {
     }).then(users => {
         res.render('search/index', {
             title: 'Search',
-            username: req.sesson.username,
+            username: req.session.username,
             section: 'search',
             users: users
         })
