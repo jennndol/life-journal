@@ -103,6 +103,9 @@ router.post('/add', auth, (req, res) => {
                 UserId: req.session.UserId,
                 happenedAt: req.body.happenedAt
             }).then((journal) => {
+                if (typeof req.body.categories == 'string') {
+                    req.body.categories = [req.body.categories]
+                }
                 req.body.categories.forEach(category => {
                     models.CategoryJournal.create({
                         JournalId: journal.id,
