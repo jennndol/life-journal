@@ -15,15 +15,16 @@
             </div>
             <div class="card-body">
                 <h2><%= title %>
-                        <% if (title !== username && username && status.status == 'blocked'){ %>
+                        <% if (title !== username && username && status.status != 'blocked'){ %>
                         <% if(listfollower.indexOf(UserId) == -1) { %>
                             <a href="/users/follow/<%= title %>" class="btn btn-success">Follow</a>
                         <%} else if(status.status == 'accepted'){%>
                             <a href="#" class="btn btn-success">Followed</a>
                             <% } %>
-                        <% if(status.status == 'blocked') %>
-                            <a href="/users/block/<%= title %>" class="btn btn-danger">Blocked</a>
-                        <%} else if(title !== username){%>
+                            <% } %>
+                        <% if ( title !== username && status.status != 'blocked') { %>
+                            <a href="/users/block/<%= title %>" class="btn btn-danger">Block</a>
+                        <%} else if (status.status == 'blocked'){%>
                         <a href="/users/block/<%= title %>" class="btn btn-danger">Blocked</a>
                         <% } %>
                     </h2>

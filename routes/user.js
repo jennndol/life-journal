@@ -92,35 +92,6 @@ router.get('/settings', auth, (req, res) => {
     })
 })
 
-router.get('/:username', auth, (req, res) => {
-    Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
-        Model.Follow.findAll({ where: { UserId: user.id }, attributes: ['FollowerId'] }).then((listFollower) => {
-            Model.Follow.findOne({ where: { UserId: req.session.UserId, FollowerId: user.id }, attributes: ['status'] }).then((status) => {
-                let follow = listFollower.map((key) => {
-                    return key.FollowerId
-                })
-                if (status == null) status = '';
-                res.render('users/profile', {
-                    title: user.username,
-                    username: req.session.username,
-                    UserId: req.session.UserId,
-                    journals: user.Journals,
-                    section: 'journals',
-                    listfollower: follow,
-                    status: status, 
-                })
-            })
-        })
-    }).catch(error => {
-        res.render('error/400', {
-            title: 'ERROR BAD REQUEST',
-            username: req.session.username,
-            section: '',
-            error: error
-        });
-    });
-});
-
 router.post('/settings', auth, (req, res) => {
     Model.User.find({ where: { id: req.session.UserId } }).then(user => {
         if (req.body.newpassword == req.body.verifpassword) {
@@ -169,7 +140,7 @@ router.post('/settings', auth, (req, res) => {
 router.get('/:username', auth, (req, res) => {
     Model.User.findOne({ include: [Model.Journal], where: { username: req.params.username, } }).then(user => {
         Model.Follow.findAll({ where: { UserId: user.id }, attributes: ['FollowerId'] }).then((listFollower) => {
-            Model.Follow.findOne({ where: { UserId: req.session.UserId, FollowerId: user.id }, attributes: ['status'] }).then((status) => {
+            Model.Follow.findOne({ where: { UserId: user.id, FollowerId: req.session.UserId }, attributes: ['status'] }).then((status) => {
                 let follow = listFollower.map((key) => {
                     return key.FollowerId
                 })
